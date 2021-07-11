@@ -8,8 +8,32 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Reference",
+"class": "Array2D",
+"language": "GDScript",
+"path": "res://scripts/array_2d.gd"
+}, {
+"base": "Resource",
+"class": "BaseCell",
+"language": "GDScript",
+"path": "res://scripts/cells/base_cell.gd"
+}, {
+"base": "Node",
+"class": "BlockHighlightManager",
+"language": "GDScript",
+"path": "res://levels/block_highlight_manager.gd"
+}, {
+"base": "Node",
+"class": "ForegroundManager",
+"language": "GDScript",
+"path": "res://levels/foreground_manager.gd"
+} ]
 _global_script_class_icons={
+"Array2D": "",
+"BaseCell": "",
+"BlockHighlightManager": "",
+"ForegroundManager": ""
 }
 
 [application]
@@ -21,6 +45,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Utilities="*res://scripts/autoloads/utilities.gd"
+CellLibrary="*res://scripts/autoloads/cell_library.gd"
 
 [display]
 
@@ -73,12 +98,18 @@ jump={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
  ]
 }
-break_block={
+break_cell={
 "deadzone": 0.5,
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+move_cell={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 
 [rendering]
 
 environment/default_environment="res://default_env.tres"
+quality/dynamic_fonts/use_oversampling=false

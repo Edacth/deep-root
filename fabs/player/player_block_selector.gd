@@ -3,13 +3,14 @@ extends Node2D
 var selected_position := Vector2(0, 0)
 
 signal mouse_position_updated(position)
-signal block_broken(position)
+signal cell_broken(position)
+signal cell_moved(from_position, to_position)
 
 func _ready() -> void:
 	pass
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var new_selected_position = get_global_mouse_position()
 	new_selected_position = Utilities.global_pos_to_grid_pos(new_selected_position)
 	
@@ -19,5 +20,9 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("break_block"):
-		emit_signal("block_broken", selected_position)
+	if event.is_action_pressed("break_cell") && event:
+		emit_signal("cell_broken", selected_position)
+	elif event.is_action_pressed("move_cell"):
+		var to_position = Vector2(selected_position.x, selected_position.y-1)
+		emit_signal("cell_moved", selected_position, to_position)
+		
