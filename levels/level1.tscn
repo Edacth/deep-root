@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/tilesets/foreground.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/tilesets/background.tres" type="TileSet" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://assets/highlighter/highlight.png" type="Texture" id=5]
 [ext_resource path="res://levels/block_highlight_manager.gd" type="Script" id=6]
 [ext_resource path="res://levels/foreground_manager.gd" type="Script" id=7]
+[ext_resource path="res://fabs/gui/GUI.tscn" type="PackedScene" id=8]
+[ext_resource path="res://fabs/gui/gui.gd" type="Script" id=9]
+[ext_resource path="res://assets/highlighter/move_origin_highlight.png" type="Texture" id=10]
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 4 )
@@ -47,6 +50,15 @@ __meta__ = {
 [node name="BlockHighlightManager" type="Node" parent="."]
 script = ExtResource( 6 )
 
+[node name="MoveOriginHighlight" type="Sprite" parent="BlockHighlightManager"]
+texture = ExtResource( 10 )
+centered = false
+
 [node name="Highlight" type="Sprite" parent="BlockHighlightManager"]
 texture = ExtResource( 5 )
 centered = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GUI" parent="CanvasLayer" instance=ExtResource( 8 )]
+script = ExtResource( 9 )

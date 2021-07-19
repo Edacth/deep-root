@@ -1,9 +1,9 @@
 extends Node
 class_name ForegroundManager
 
-
 var cells: Array2D
 onready var ForeTilemap = $Foreground
+
 
 func _ready() -> void:
 	read_tilemap_state()
@@ -38,6 +38,13 @@ func get_cellv(position: Vector2) -> BaseCell:
 	return cell
 
 
+func are_tiles_adjacent(position1: Vector2, position2: Vector2) -> bool:
+	var distance = sqrt(pow(position2.x - position1.x, 2) + pow(position2.y - position1.y, 2))
+	if distance <= 1:
+		return true
+	return false
+
+
 func set_cellv(set_position: Vector2, value: BaseCell):
 	var result = cells.set_cellv_if_exists(set_position, value)
 	if result:
@@ -53,10 +60,16 @@ func destroy_cell(destroy_position: Vector2):
 #		ForeTilemap.update_dirty_quadrants()
 	
 
+func move_cell_with_player_validation(from_position: Vector2, to_position: Vector2) -> bool:
+	if are_tiles_adjacent(from_position, to_position) == false:
+		return false
+	if get_cellv(to_position).id != CellLibrary.ForegroundCells.EMPTY:
+		return false
+	move_cell(from_position, to_position)
+	return true
+
+
 func move_cell(from_position: Vector2, to_position: Vector2):
-#	if !(cells.has_cellv(from_position) && cells.has(to_position)):
-#		return
-#	var from_value = cells.get_cellv(from_position)
 	var from_value = get_cellv(from_position)
 	set_cellv(to_position, from_value)
 	set_cellv(from_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY))
