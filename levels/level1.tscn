@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/tilesets/foreground.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/tilesets/background.tres" type="TileSet" id=2]
@@ -10,12 +10,14 @@
 [ext_resource path="res://fabs/gui/GUI.tscn" type="PackedScene" id=8]
 [ext_resource path="res://fabs/gui/gui.gd" type="Script" id=9]
 [ext_resource path="res://assets/highlighter/move_origin_highlight.png" type="Texture" id=10]
+[ext_resource path="res://assets/tilesets/foreground.png" type="Texture" id=11]
+[ext_resource path="res://levels/cell_movement_lerper.gd" type="Script" id=12]
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 4 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 136, 112 )
+position = Vector2( 128, 112 )
 
 [node name="WorldManager" type="Node" parent="."]
 
@@ -57,6 +59,25 @@ centered = false
 [node name="Highlight" type="Sprite" parent="BlockHighlightManager"]
 texture = ExtResource( 5 )
 centered = false
+
+[node name="Tween" type="Tween" parent="BlockHighlightManager"]
+
+[node name="CellMovementLerper" type="Node" parent="."]
+script = ExtResource( 12 )
+
+[node name="Sprite" type="Sprite" parent="CellMovementLerper"]
+position = Vector2( 128, 120 )
+texture = ExtResource( 11 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 8, 8 )
+
+[node name="Sprite" type="Sprite" parent="CellMovementLerper/Sprite"]
+visible = false
+texture = ExtResource( 5 )
+centered = false
+
+[node name="Tween" type="Tween" parent="CellMovementLerper"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

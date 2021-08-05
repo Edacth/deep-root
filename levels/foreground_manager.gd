@@ -2,10 +2,12 @@ extends Node
 class_name ForegroundManager
 
 var cells: Array2D
+var CellMovementLerper: CellMovementLerper
 onready var ForeTilemap = $Foreground
 
 
-func _ready() -> void:
+func setup(_CellMovementLerper: CellMovementLerper) -> void:
+	CellMovementLerper = _CellMovementLerper
 	read_tilemap_state()
 
 
@@ -45,9 +47,9 @@ func are_tiles_adjacent(position1: Vector2, position2: Vector2) -> bool:
 	return false
 
 
-func set_cellv(set_position: Vector2, value: BaseCell):
+func set_cellv(set_position: Vector2, value: BaseCell, update_visually: bool = true):
 	var result = cells.set_cellv_if_exists(set_position, value)
-	if result:
+	if result && update_visually:
 		ForeTilemap.set_cellv(set_position, value.id)
 		ForeTilemap.update_dirty_quadrants()
 
@@ -65,11 +67,17 @@ func move_cell_with_player_validation(from_position: Vector2, to_position: Vecto
 		return false
 	if get_cellv(to_position).id != CellLibrary.ForegroundCells.EMPTY:
 		return false
-	move_cell(from_position, to_position)
+	move_cell(from_position, to_position, true)
+	CellMovementLerper.create_lerp_effect(from_position, to_position)
 	return true
 
 
-func move_cell(from_position: Vector2, to_position: Vector2):
+func move_cell(from_position: Vector2, to_position: Vector2, play_lerp: bool = false):
 	var from_value = get_cellv(from_position)
-	set_cellv(to_position, from_value)
+	set_cellv(to_position, from_value, !play_lerp)
 	set_cellv(from_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY))
+
+
+func update_cell_visually(position: Vector2):
+	var data := get_cellv(position)
+	ForeTilemap.set_cellv(position, data.id)
