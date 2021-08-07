@@ -19,10 +19,6 @@ func create_lerp_effect(from_position: Vector2, to_position: Vector2):
 	Tween.interpolate_property(Sprite, "position", from_position, to_position, 0.1, Tween.TRANS_LINEAR)
 	Tween.start()
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("test_input"):
-		create_lerp_effect(Vector2(12, 12), Vector2(11, 12))
-
 
 func emit_lerp_effect_finished(object, key):
 	emit_signal("lerp_effect_finished", Utilities.global_pos_to_grid_pos(object.position))

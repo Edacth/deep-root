@@ -1,13 +1,17 @@
 extends Node
 class_name ForegroundManager
 
+signal component_event_fired(name, args)
+
 var cells: Array2D
 var CellMovementLerper: CellMovementLerper
+var FireEffectManager: FireEffectManager
 onready var ForeTilemap = $Foreground
 
 
-func setup(_CellMovementLerper: CellMovementLerper) -> void:
+func setup(_CellMovementLerper: CellMovementLerper, _FireEffectManager: FireEffectManager) -> void:
 	CellMovementLerper = _CellMovementLerper
+	FireEffectManager = _FireEffectManager
 	read_tilemap_state()
 
 
@@ -25,10 +29,11 @@ func read_tilemap_state():
 	for _i in range(largest_position.x+1):
 		var rows = []
 		for _j in range(largest_position.y+1):
-			rows.append(BaseCell.new(-1))
+			rows.append(BaseCell.new(-1, Vector2(_i, _j)))
 		cells.append_row(rows)
 	for cell_pos in initial_cells:
-		var new_cell = BaseCell.new(ForeTilemap.get_cellv(cell_pos))
+		var new_cell = BaseCell.new(ForeTilemap.get_cellv(cell_pos), cell_pos)
+		new_cell.connect("component_event_fired", self, "echo_component_signal")
 		cells.set_cellv(cell_pos, new_cell)
 
 
@@ -55,7 +60,7 @@ func set_cellv(set_position: Vector2, value: BaseCell, update_visually: bool = t
 
 
 func destroy_cell(destroy_position: Vector2):
-	set_cellv(destroy_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY))
+	set_cellv(destroy_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY, destroy_position))
 #	var cell = ForeTilemap.get_cellv(destroy_position)
 #	if CellLibrary.has_tag(cell, "breakable"):
 #		ForeTilemap.set_cellv(destroy_position, 0, false, false, false)
@@ -74,10 +79,24 @@ func move_cell_with_player_validation(from_position: Vector2, to_position: Vecto
 
 func move_cell(from_position: Vector2, to_position: Vector2, play_lerp: bool = false):
 	var from_value = get_cellv(from_position)
+	from_value.on_moved(to_position)
 	set_cellv(to_position, from_value, !play_lerp)
-	set_cellv(from_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY))
+	set_cellv(from_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY, from_position))
+
+
+func ignite_cell(position: Vector2) -> bool:
+	var chosen_cell = get_cellv(position)
+	var flammable_component = chosen_cell.get_component("flammable")
+	if typeof(flammable_component) != TYPE_BOOL:
+		flammable_component.set_fire(true)
+		return true
+	return false
 
 
 func update_cell_visually(position: Vector2):
 	var data := get_cellv(position)
 	ForeTilemap.set_cellv(position, data.id)
+
+
+func echo_component_signal(name, args):
+	emit_signal("component_event_fired", name, args)

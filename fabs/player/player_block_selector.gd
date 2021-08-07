@@ -43,8 +43,10 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("break_cell") && event:
+	if event.is_action_pressed("break_cell"):
 		emit_signal("cell_broken", selected_position)
+	if event.is_action_pressed("light_fire"):
+		Foreground.ignite_cell(selected_position)
 	elif event.is_action_pressed("move_cell"):
 		cell_move_input_pressed = true
 		position_that_cell_move_was_pressed = selected_position

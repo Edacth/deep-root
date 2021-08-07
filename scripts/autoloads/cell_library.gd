@@ -4,16 +4,18 @@ extends Node
 enum ForegroundCells {
 	EMPTY = -1
 	GRASS = 2,
-	DIRT = 3
+	DIRT = 3,
+	REED_BULB = 20,
 }
 
 var foreground_dict: Dictionary
 
 
 func _ready() -> void:
-	foreground_dict[ForegroundCells.EMPTY] = {"name": "Empty", "tags": []}
-	foreground_dict[ForegroundCells.GRASS] = {"name": "Grass", "tags": ["breakable"]}
-	foreground_dict[ForegroundCells.DIRT] = {"name": "Dirt", "tags": ["breakable"]}
+	foreground_dict[ForegroundCells.EMPTY] = {"name": "Empty", "tags": [], "components": []}
+	foreground_dict[ForegroundCells.GRASS] = {"name": "Grass", "tags": ["breakable"], "components": []}
+	foreground_dict[ForegroundCells.DIRT] = {"name": "Dirt", "tags": ["breakable"], "components": []}
+	foreground_dict[ForegroundCells.REED_BULB] = {"name": "Reed Bulb", "tags": ["flammable"], "components": ["flammable"]}
 
 
 func get_cell_data(cell_enum: int) -> Dictionary:

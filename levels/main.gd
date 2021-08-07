@@ -3,8 +3,10 @@ extends Node
 onready var Player = $Player
 onready var BlockHighlightManager: BlockHighlightManager = $BlockHighlightManager
 onready var Foreground := $WorldManager/ForegroundManager
+onready var FireEffectManager := $FireEffectManager
 onready var GUI = $CanvasLayer/GUI
 onready var CellMovementLerper = $CellMovementLerper
+onready var ComponentEventHandler = $ComponentEventHandler
 
 
 func _ready() -> void:
@@ -12,7 +14,7 @@ func _ready() -> void:
 	BlockHighlightManager.setup(Foreground)
 	
 	# Foreground setup
-	Foreground.setup(CellMovementLerper)
+	Foreground.setup(CellMovementLerper, FireEffectManager)
 	CellMovementLerper.connect("lerp_effect_finished", Foreground, "update_cell_visually")
 	
 	# GUI setup
@@ -23,3 +25,7 @@ func _ready() -> void:
 	
 	# CellMovementLerper setup
 	CellMovementLerper.setup()
+	
+	# ComponentEventHandler setup
+	ComponentEventHandler.setup(FireEffectManager)
+	Foreground.connect("component_event_fired", ComponentEventHandler, "handle_event")

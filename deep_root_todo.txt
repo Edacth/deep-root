@@ -1,0 +1,19 @@
+Character controller
+    Jumping
+    Overall improvements
+Move tool
+    Prevent dragging cells through yourself
+Envionmental tools
+    Campfire
+Environment
+    Chance for dirt to fall
+    Smaller plants
+    Plant growth
+    Darkness
+Design
+    How do you loosen blocks?
+    What is the progression path?
+
+===
+Using beet juice to soften stone so you can move it
+Stone doesn't fall
