@@ -6,6 +6,7 @@ signal component_event_fired(name, args)
 var cells: Array2D
 var CellMovementLerper: CellMovementLerper
 var FireEffectManager: FireEffectManager
+var timestamp_of_most_recent_tick
 onready var ForeTilemap = $Foreground
 
 
@@ -13,6 +14,7 @@ func setup(_CellMovementLerper: CellMovementLerper, _FireEffectManager: FireEffe
 	CellMovementLerper = _CellMovementLerper
 	FireEffectManager = _FireEffectManager
 	read_tilemap_state()
+	timestamp_of_most_recent_tick = OS.get_ticks_msec()
 
 
 func read_tilemap_state():
@@ -29,10 +31,10 @@ func read_tilemap_state():
 	for _i in range(largest_position.x+1):
 		var rows = []
 		for _j in range(largest_position.y+1):
-			rows.append(BaseCell.new(-1, Vector2(_i, _j)))
+			rows.append(BaseCell.new(-1, Vector2(_i, _j), self))
 		cells.append_row(rows)
 	for cell_pos in initial_cells:
-		var new_cell = BaseCell.new(ForeTilemap.get_cellv(cell_pos), cell_pos)
+		var new_cell = BaseCell.new(ForeTilemap.get_cellv(cell_pos), cell_pos, self)
 		new_cell.connect("component_event_fired", self, "echo_component_signal")
 		cells.set_cellv(cell_pos, new_cell)
 
@@ -41,7 +43,7 @@ func get_cellv(position: Vector2) -> BaseCell:
 	if !cells.has_cellv(position):
 		return null
 	var cell = cells.get_cellv(position)
-	print(cell)
+#	print(cell)
 	return cell
 
 
@@ -60,7 +62,7 @@ func set_cellv(set_position: Vector2, value: BaseCell, update_visually: bool = t
 
 
 func destroy_cell(destroy_position: Vector2):
-	set_cellv(destroy_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY, destroy_position))
+	set_cellv(destroy_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY, destroy_position, self))
 #	var cell = ForeTilemap.get_cellv(destroy_position)
 #	if CellLibrary.has_tag(cell, "breakable"):
 #		ForeTilemap.set_cellv(destroy_position, 0, false, false, false)
@@ -73,7 +75,7 @@ func move_cell_with_player_validation(from_position: Vector2, to_position: Vecto
 	if get_cellv(to_position).id != CellLibrary.ForegroundCells.EMPTY:
 		return false
 	move_cell(from_position, to_position, true)
-	CellMovementLerper.create_lerp_effect(from_position, to_position)
+	CellMovementLerper.create_lerp_effect(from_position, to_position, get_cellv(to_position).id)
 	return true
 
 
@@ -81,7 +83,7 @@ func move_cell(from_position: Vector2, to_position: Vector2, play_lerp: bool = f
 	var from_value = get_cellv(from_position)
 	from_value.on_moved(to_position)
 	set_cellv(to_position, from_value, !play_lerp)
-	set_cellv(from_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY, from_position))
+	set_cellv(from_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY, from_position, self))
 
 
 func ignite_cell(position: Vector2) -> bool:
@@ -100,3 +102,12 @@ func update_cell_visually(position: Vector2):
 
 func echo_component_signal(name, args):
 	emit_signal("component_event_fired", name, args)
+
+
+func _physics_process(delta: float) -> void:
+	if OS.get_ticks_msec() - timestamp_of_most_recent_tick >= 100:
+		timestamp_of_most_recent_tick = OS.get_ticks_msec()
+		var rows = cells.get_rows()
+		for i in range(rows.size()):
+			for j in range(rows[i].size()):
+				rows[i][j].on_tick()

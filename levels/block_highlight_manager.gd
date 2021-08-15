@@ -11,13 +11,17 @@ func setup(_Foreground: ForegroundManager):
 
 
 func set_highlight_position(new_position: Vector2):
-	if Foreground.get_cellv(new_position).id != CellLibrary.ForegroundCells.EMPTY:
-#		Highlight.position = Utilities.grid_pos_to_global_pos(new_position)
-		Tween.interpolate_property(Highlight, "position", Highlight.position, Utilities.grid_pos_to_global_pos(new_position), 0.1, Tween.TRANS_LINEAR)
-		Tween.start()
-		_set_highlight_visibility(true)
-	else:
-		_set_highlight_visibility(false)
+	Tween.interpolate_property(Highlight, "position", Highlight.position, Utilities.grid_pos_to_global_pos(new_position), 0.03, Tween.TRANS_LINEAR)
+	Tween.start()
+#	Highlight.position = Utilities.grid_pos_to_global_pos(new_position)
+	
+#	if Foreground.get_cellv(new_position).id != CellLibrary.ForegroundCells.EMPTY:
+##		Highlight.position = Utilities.grid_pos_to_global_pos(new_position)
+#		Tween.interpolate_property(Highlight, "position", Highlight.position, Utilities.grid_pos_to_global_pos(new_position), 0.1, Tween.TRANS_LINEAR)
+#		Tween.start()
+#		_set_highlight_visibility(true)
+#	else:
+#		_set_highlight_visibility(false)
 
 
 func set_move_origin_highlight_position(new_position: Vector2):

@@ -29,9 +29,11 @@ func _process(_delta: float) -> void:
 		var y_difference = Vector2(0, position_difference.y).normalized()
 		var x_difference = Vector2(position_difference.x, 0).normalized()
 		var difference_to_apply = y_difference
+#		print("move call 1")
 		var success = Foreground.move_cell_with_player_validation(position_that_cell_move_was_pressed, position_that_cell_move_was_pressed+difference_to_apply)
 		if !success:
 			difference_to_apply = x_difference
+#			print("move call 2")
 			success = Foreground.move_cell_with_player_validation(position_that_cell_move_was_pressed, position_that_cell_move_was_pressed+difference_to_apply)
 		if success:
 			position_that_cell_move_was_pressed = position_that_cell_move_was_pressed+difference_to_apply
@@ -39,7 +41,7 @@ func _process(_delta: float) -> void:
 			BlockHighlightManager.set_move_origin_highlight_position(position_that_cell_move_was_pressed)
 			BlockHighlightManager.set_move_origin_highlight_visibility(true)
 		timestamp_of_most_recent_move_start = OS.get_ticks_msec()
-#	BlockHighlightManager.set_highlight_position(selected_position)
+	BlockHighlightManager.set_highlight_position(selected_position)
 
 
 func _input(event: InputEvent) -> void:
