@@ -35,6 +35,11 @@ _global_script_classes=[ {
 "path": "res://levels/cell_movement_lerper.gd"
 }, {
 "base": "Node",
+"class": "CellShakeEffectManager",
+"language": "GDScript",
+"path": "res://levels/cell_shake_effect_manager.gd"
+}, {
+"base": "Node",
 "class": "ComponentEventHandler",
 "language": "GDScript",
 "path": "res://levels/component_event_handler.gd"
@@ -58,6 +63,11 @@ _global_script_classes=[ {
 "class": "ForegroundManager",
 "language": "GDScript",
 "path": "res://levels/foreground_manager.gd"
+}, {
+"base": "BaseComponent",
+"class": "MoveResistance",
+"language": "GDScript",
+"path": "res://scripts/cells/components/move_resistance.gd"
 } ]
 _global_script_class_icons={
 "Array2D": "",
@@ -65,11 +75,13 @@ _global_script_class_icons={
 "BaseComponent": "",
 "BlockHighlightManager": "",
 "CellMovementLerper": "",
+"CellShakeEffectManager": "",
 "ComponentEventHandler": "",
 "Cookable": "",
 "FireEffectManager": "",
 "Flammable": "",
-"ForegroundManager": ""
+"ForegroundManager": "",
+"MoveResistance": ""
 }
 
 [application]

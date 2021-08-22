@@ -7,18 +7,30 @@ var id: int
 var position: Vector2
 var ForegroundManager
 var components := Dictionary()
+var elevate_component_event: FuncRef
+var ComponentEventDestination = load("res://scripts/cells/components/base_component.gd").ComponentEventDestination
 
 
-func _init(_id, _position, _ForegroundManager) -> void:
+func _init(_id, _position, _ForegroundManager, _elevate_component_event) -> void:
 	id = _id
 	position = _position
 	ForegroundManager = _ForegroundManager
+	elevate_component_event = _elevate_component_event
 	var component_list = CellLibrary.get_cell_data(id)["components"]
-	for component_name in component_list:
+	for component in component_list:
+		var component_name
+		var component_params = []
+		if typeof(component) != TYPE_STRING:
+			component_name = component.keys()[0]
+			component_params = component[component.keys()[0]]
+		else:
+			component_name = component
 #		var hmm = ProjectSettings.get_setting("_global_script_classes")
 		var new_component = load("res://scripts/cells/components/" + component_name + ".gd").new()
+		if component_params.size() > 0:
+			new_component.callv("setup", component_params)
+		new_component.fire_component_event = funcref(self, "process_component_signal")
 		new_component.parent_cell = self
-		new_component.connect("component_event_fired", self, "echo_component_signal")
 		components[component_name] = new_component
 
 
@@ -63,5 +75,13 @@ func get_component(component_name: String):
 	return false
 
 
-func echo_component_signal(name, args):
-	emit_signal("component_event_fired", name, args)
+func process_component_signal(destination, name, args):
+	if destination == ComponentEventDestination.PARENT_CELL:
+		match name:
+			"get_parent_cell_position":
+				return position
+			_:
+				if has_method(name):
+					return callv(name, args)
+	else:
+		return elevate_component_event.call_func(destination, name, args)

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/tilesets/foreground.png" type="Texture" id=1]
+[ext_resource path="res://assets/animations/cell_shake.tres" type="Animation" id=2]
+
+[node name="CellShake" type="Node2D"]
+position = Vector2( 80, 104 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/cell_shake = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 8, 8 )

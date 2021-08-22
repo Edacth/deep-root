@@ -2,6 +2,8 @@ Character controller
     Jumping
     Overall improvements
 Move tool
+    x Finish implementing the move resistance component and how the foreground manager handles it.
+    Finish implementing the cell shake effect manager
     Prevent dragging cells through yourself
 Envionmental tools
     Campfire

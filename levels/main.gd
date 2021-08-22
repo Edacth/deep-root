@@ -15,6 +15,7 @@ func _ready() -> void:
 	
 	# Foreground setup
 	Foreground.setup(CellMovementLerper, FireEffectManager)
+	Foreground.elevate_component_event = funcref(ComponentEventHandler, "process_component_event")
 	CellMovementLerper.connect("lerp_effect_finished", Foreground, "update_cell_visually")
 	
 	# GUI setup
@@ -28,4 +29,4 @@ func _ready() -> void:
 	
 	# ComponentEventHandler setup
 	ComponentEventHandler.setup(FireEffectManager)
-	Foreground.connect("component_event_fired", ComponentEventHandler, "handle_event")
+#	Foreground.connect("component_event_fired", ComponentEventHandler, "handle_event")

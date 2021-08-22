@@ -8,9 +8,9 @@ func setup(_FireEffectManager: FireEffectManager):
 	FireEffectManager = _FireEffectManager
 
 
-func handle_event(name, args):
+func process_component_event(destination, name, args):
 	match name:
-		"fire_ignited":
+		"ignite_fire":
 			FireEffectManager.create_fire_effect(args[1])
-		"fire_extinguished":
+		"extinguish_fire":
 			FireEffectManager.delete_fire_effect(args[1])

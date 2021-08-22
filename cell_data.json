@@ -1,0 +1,3 @@
+{
+    "stone": {"name": "Stone", "tags": [], "components": [ "move_resistance": [false] ]}
+}

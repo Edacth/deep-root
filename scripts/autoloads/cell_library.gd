@@ -20,7 +20,7 @@ func _ready() -> void:
 	foreground_dict[ForegroundCells.EMPTY] = {"name": "Empty", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.GRASS] = {"name": "Grass", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.DIRT] = {"name": "Dirt", "tags": [], "components": []}
-	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": []}
+	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": [ { "move_resistance": [false]}]}
 	foreground_dict[ForegroundCells.SMALL_TAPROOT] = {"name": "Small Taproot", "tags": [], "components": ["cookable"]}
 	foreground_dict[ForegroundCells.COOKED_SMALL_TAPROOT] = {"name": "Cooked Small Taproot", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.REED_BULB] = {"name": "Reed Bulb", "tags": ["flammable"], "components": ["flammable"]}

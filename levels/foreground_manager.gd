@@ -1,13 +1,14 @@
 extends Node
 class_name ForegroundManager
 
-signal component_event_fired(name, args)
+var elevate_component_event: FuncRef
 
 var cells: Array2D
 var CellMovementLerper: CellMovementLerper
 var FireEffectManager: FireEffectManager
 var timestamp_of_most_recent_tick
 onready var ForeTilemap = $Foreground
+var ComponentEventDestination = load("res://scripts/cells/components/base_component.gd").ComponentEventDestination
 
 
 func setup(_CellMovementLerper: CellMovementLerper, _FireEffectManager: FireEffectManager) -> void:
@@ -31,11 +32,10 @@ func read_tilemap_state():
 	for _i in range(largest_position.x+1):
 		var rows = []
 		for _j in range(largest_position.y+1):
-			rows.append(BaseCell.new(-1, Vector2(_i, _j), self))
+			rows.append(create_cellv(CellLibrary.ForegroundCells.EMPTY, Vector2(_i, _j)))
 		cells.append_row(rows)
 	for cell_pos in initial_cells:
-		var new_cell = BaseCell.new(ForeTilemap.get_cellv(cell_pos), cell_pos, self)
-		new_cell.connect("component_event_fired", self, "echo_component_signal")
+		var new_cell = create_cellv(ForeTilemap.get_cellv(cell_pos), cell_pos)
 		cells.set_cellv(cell_pos, new_cell)
 
 
@@ -54,15 +54,26 @@ func are_tiles_adjacent(position1: Vector2, position2: Vector2) -> bool:
 	return false
 
 
+func create_cellv(cell_type, cell_position = Vector2(0, 0)) -> BaseCell:
+	var new_cell = BaseCell.new(cell_type, cell_position, self, funcref(self, "process_component_event"))
+	return new_cell
+
+
 func set_cellv(set_position: Vector2, value: BaseCell, update_visually: bool = true):
 	var result = cells.set_cellv_if_exists(set_position, value)
-	if result && update_visually:
-		ForeTilemap.set_cellv(set_position, value.id)
-		ForeTilemap.update_dirty_quadrants()
+	if result:
+		value.position = set_position
+		if update_visually:
+			ForeTilemap.set_cellv(set_position, value.id)
+			ForeTilemap.update_dirty_quadrants()
+
+
+func replace_cellv(replace_position: Vector2, value: BaseCell, update_visually: bool = true):
+	pass
 
 
 func destroy_cell(destroy_position: Vector2):
-	set_cellv(destroy_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY, destroy_position, self))
+	set_cellv(destroy_position, create_cellv(CellLibrary.ForegroundCells.EMPTY, destroy_position))
 #	var cell = ForeTilemap.get_cellv(destroy_position)
 #	if CellLibrary.has_tag(cell, "breakable"):
 #		ForeTilemap.set_cellv(destroy_position, 0, false, false, false)
@@ -74,16 +85,22 @@ func move_cell_with_player_validation(from_position: Vector2, to_position: Vecto
 		return false
 	if get_cellv(to_position).id != CellLibrary.ForegroundCells.EMPTY:
 		return false
-	move_cell(from_position, to_position, true)
+	var result = move_cell(from_position, to_position, true)
+	if !result: return false
 	CellMovementLerper.create_lerp_effect(from_position, to_position, get_cellv(to_position).id)
 	return true
 
 
-func move_cell(from_position: Vector2, to_position: Vector2, play_lerp: bool = false):
+func move_cell(from_position: Vector2, to_position: Vector2, play_lerp: bool = false) -> bool:
 	var from_value = get_cellv(from_position)
+	var move_resistance_component = from_value.get_component("move_resistance")
+	if typeof(move_resistance_component) != TYPE_BOOL:
+		if move_resistance_component.is_moveable() == false:
+			return false
 	from_value.on_moved(to_position)
 	set_cellv(to_position, from_value, !play_lerp)
-	set_cellv(from_position, BaseCell.new(CellLibrary.ForegroundCells.EMPTY, from_position, self))
+	set_cellv(from_position, create_cellv(CellLibrary.ForegroundCells.EMPTY, from_position))
+	return true
 
 
 func ignite_cell(position: Vector2) -> bool:
@@ -100,8 +117,16 @@ func update_cell_visually(position: Vector2):
 	ForeTilemap.set_cellv(position, data.id)
 
 
-func echo_component_signal(name, args):
-	emit_signal("component_event_fired", name, args)
+func process_component_event(destination, name, args):
+	if destination == ComponentEventDestination.FOREGROUND_MANAGER:
+		match name:
+#			"get_cellv":
+#				return callv("get_cellv", args)
+			_:
+				if has_method(name):
+					return callv(name, args)
+	else:
+		return elevate_component_event.call_func(destination, name, args)
 
 
 func _physics_process(delta: float) -> void:

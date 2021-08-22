@@ -21,8 +21,3 @@ func delete_fire_effect(position: Vector2):
 		if fire.position == Utilities.grid_pos_to_global_pos(position):
 			fire.queue_free()
 			fires.erase(fire)
-	
-	
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("test_input"):
-		create_fire_effect(Vector2(12, 12))

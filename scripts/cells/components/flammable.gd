@@ -10,13 +10,13 @@ func is_on_fire() -> bool:
 
 func set_fire(_on_fire):
 	on_fire = _on_fire
-	emit_signal("component_event_fired", "fire_ignited", [self, parent_cell.position])
+	fire_component_event.call_func(ComponentEventDestination.GLOBAL_EVENT_HANDLER, "ignite_fire", [self, parent_cell.position])
 
 
 func on_moved(new_position):
 	if on_fire:
 		on_fire = false
-		emit_signal("component_event_fired", "fire_extinguished", [self, parent_cell.position])
+		fire_component_event.call_func(ComponentEventDestination.GLOBAL_EVENT_HANDLER, "extinguish_fire", [self, parent_cell.position])
 
 
 func get_provided_tags():
