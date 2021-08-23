@@ -1,21 +1,21 @@
 extends Resource
 class_name BaseCell
 
-signal component_event_fired(name, args)
-
 var id: int
 var position: Vector2
 var ForegroundManager
 var components := Dictionary()
+var autotile: Vector2
 var elevate_component_event: FuncRef
 var ComponentEventDestination = load("res://scripts/cells/components/base_component.gd").ComponentEventDestination
 
 
-func _init(_id, _position, _ForegroundManager, _elevate_component_event) -> void:
+func _init(_id, _position, _ForegroundManager, _elevate_component_event, _autotile = Vector2(0, 0)) -> void:
 	id = _id
 	position = _position
 	ForegroundManager = _ForegroundManager
 	elevate_component_event = _elevate_component_event
+	autotile = _autotile
 	var component_list = CellLibrary.get_cell_data(id)["components"]
 	for component in component_list:
 		var component_name

@@ -9,7 +9,8 @@ enum ForegroundCells {
 	SMALL_TAPROOT = 23,
 	COOKED_SMALL_TAPROOT = 25,
 	REED_BULB = 20,
-	
+	TAPROOT_SHELL = 26,
+	TAPROOT_STEM = 27,
 }
 
 var foreground_dict: Dictionary
@@ -20,10 +21,12 @@ func _ready() -> void:
 	foreground_dict[ForegroundCells.EMPTY] = {"name": "Empty", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.GRASS] = {"name": "Grass", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.DIRT] = {"name": "Dirt", "tags": [], "components": []}
-	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": [ { "move_resistance": [false]}]}
+	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": [ {"move_resistance":[false]} ]}
 	foreground_dict[ForegroundCells.SMALL_TAPROOT] = {"name": "Small Taproot", "tags": [], "components": ["cookable"]}
 	foreground_dict[ForegroundCells.COOKED_SMALL_TAPROOT] = {"name": "Cooked Small Taproot", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.REED_BULB] = {"name": "Reed Bulb", "tags": ["flammable"], "components": ["flammable"]}
+	foreground_dict[ForegroundCells.TAPROOT_SHELL] = {"name": "Taproot Shell", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
+	foreground_dict[ForegroundCells.TAPROOT_STEM] = {"name": "Taproot Stem", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
 
 
 func get_cell_data(cell_enum: int) -> Dictionary:
@@ -42,9 +45,18 @@ func has_tag(cell_enum: int, searched_tag) -> bool:
 	return false
 
 
-func get_cell_uv_rect(cell_id: int):
-	return foreground_tileset.tile_get_region(cell_id)
+func get_foreground_tileset():
+	return foreground_tileset
 
 
-func get_cell_texture_offset(cell_id: int):
-	return foreground_tileset.tile_get_texture_offset(cell_id)
+func set_sprite_to_tile(sprite, cell_id, autotile_coords):
+	var foreground_tileset : TileSet = CellLibrary.get_foreground_tileset()
+	var tile_mode = foreground_tileset.tile_get_tile_mode(cell_id)
+	sprite.texture = foreground_tileset.tile_get_texture(cell_id)
+	if tile_mode == TileSet.SINGLE_TILE:
+		sprite.region_rect = foreground_tileset.tile_get_region(cell_id)
+		sprite.offset = foreground_tileset.tile_get_texture_offset(cell_id)
+	elif tile_mode == TileSet.ATLAS_TILE:
+		var region = foreground_tileset.tile_get_region(cell_id)
+		sprite.region_rect = Rect2(region.position + autotile_coords*8, Vector2(8, 8))
+		sprite.offset = Vector2(0, 0)

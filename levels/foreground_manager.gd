@@ -6,14 +6,16 @@ var elevate_component_event: FuncRef
 var cells: Array2D
 var CellMovementLerper: CellMovementLerper
 var FireEffectManager: FireEffectManager
+var CellShakeEffectManager: CellShakeEffectManager
 var timestamp_of_most_recent_tick
 onready var ForeTilemap = $Foreground
 var ComponentEventDestination = load("res://scripts/cells/components/base_component.gd").ComponentEventDestination
 
 
-func setup(_CellMovementLerper: CellMovementLerper, _FireEffectManager: FireEffectManager) -> void:
+func setup(_CellMovementLerper, _FireEffectManager, _CellShakeEffectManager) -> void:
 	CellMovementLerper = _CellMovementLerper
 	FireEffectManager = _FireEffectManager
+	CellShakeEffectManager = _CellShakeEffectManager
 	read_tilemap_state()
 	timestamp_of_most_recent_tick = OS.get_ticks_msec()
 
@@ -35,7 +37,8 @@ func read_tilemap_state():
 			rows.append(create_cellv(CellLibrary.ForegroundCells.EMPTY, Vector2(_i, _j)))
 		cells.append_row(rows)
 	for cell_pos in initial_cells:
-		var new_cell = create_cellv(ForeTilemap.get_cellv(cell_pos), cell_pos)
+		var autotile_coords = ForeTilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
+		var new_cell = create_cellv(ForeTilemap.get_cellv(cell_pos), cell_pos, autotile_coords)
 		cells.set_cellv(cell_pos, new_cell)
 
 
@@ -54,8 +57,8 @@ func are_tiles_adjacent(position1: Vector2, position2: Vector2) -> bool:
 	return false
 
 
-func create_cellv(cell_type, cell_position = Vector2(0, 0)) -> BaseCell:
-	var new_cell = BaseCell.new(cell_type, cell_position, self, funcref(self, "process_component_event"))
+func create_cellv(cell_type, cell_position = Vector2(0, 0), autotile = Vector2(0, 0)) -> BaseCell:
+	var new_cell = BaseCell.new(cell_type, cell_position, self, funcref(self, "process_component_event"), autotile)
 	return new_cell
 
 
@@ -64,7 +67,7 @@ func set_cellv(set_position: Vector2, value: BaseCell, update_visually: bool = t
 	if result:
 		value.position = set_position
 		if update_visually:
-			ForeTilemap.set_cellv(set_position, value.id)
+			ForeTilemap.set_cell(set_position.x, set_position.y, value.id, false, false, false, value.autotile)
 			ForeTilemap.update_dirty_quadrants()
 
 
@@ -74,10 +77,6 @@ func replace_cellv(replace_position: Vector2, value: BaseCell, update_visually: 
 
 func destroy_cell(destroy_position: Vector2):
 	set_cellv(destroy_position, create_cellv(CellLibrary.ForegroundCells.EMPTY, destroy_position))
-#	var cell = ForeTilemap.get_cellv(destroy_position)
-#	if CellLibrary.has_tag(cell, "breakable"):
-#		ForeTilemap.set_cellv(destroy_position, 0, false, false, false)
-#		ForeTilemap.update_dirty_quadrants()
 	
 
 func move_cell_with_player_validation(from_position: Vector2, to_position: Vector2) -> bool:
@@ -87,7 +86,8 @@ func move_cell_with_player_validation(from_position: Vector2, to_position: Vecto
 		return false
 	var result = move_cell(from_position, to_position, true)
 	if !result: return false
-	CellMovementLerper.create_lerp_effect(from_position, to_position, get_cellv(to_position).id)
+	var moved_cell = get_cellv(to_position)
+	CellMovementLerper.create_lerp_effect(from_position, to_position, moved_cell.id, moved_cell.autotile)
 	return true
 
 
@@ -96,6 +96,7 @@ func move_cell(from_position: Vector2, to_position: Vector2, play_lerp: bool = f
 	var move_resistance_component = from_value.get_component("move_resistance")
 	if typeof(move_resistance_component) != TYPE_BOOL:
 		if move_resistance_component.is_moveable() == false:
+			CellShakeEffectManager.create_new_effect(from_position, from_value.id, from_value.autotile)
 			return false
 	from_value.on_moved(to_position)
 	set_cellv(to_position, from_value, !play_lerp)
@@ -114,7 +115,7 @@ func ignite_cell(position: Vector2) -> bool:
 
 func update_cell_visually(position: Vector2):
 	var data := get_cellv(position)
-	ForeTilemap.set_cellv(position, data.id)
+	ForeTilemap.set_cell(position.x, position.y, data.id, false, false, false, data.autotile)
 
 
 func process_component_event(destination, name, args):
@@ -129,7 +130,7 @@ func process_component_event(destination, name, args):
 		return elevate_component_event.call_func(destination, name, args)
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if OS.get_ticks_msec() - timestamp_of_most_recent_tick >= 100:
 		timestamp_of_most_recent_tick = OS.get_ticks_msec()
 		var rows = cells.get_rows()

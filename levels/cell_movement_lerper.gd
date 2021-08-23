@@ -14,14 +14,10 @@ func setup() -> void:
 #	Sprite.visible = false
 
 
-func create_lerp_effect(from_position: Vector2, to_position: Vector2, cell_id: int):
+func create_lerp_effect(from_position: Vector2, to_position: Vector2, cell_id: int, autotile_coords = Vector2(0, 0)):
 	from_position = Utilities.grid_pos_to_global_pos(from_position)
 	to_position = Utilities.grid_pos_to_global_pos(to_position)
-	var texture_region = CellLibrary.get_cell_uv_rect(cell_id)
-	var texture_offset = CellLibrary.get_cell_texture_offset(cell_id)
-	Sprite.region_rect = texture_region
-	Sprite.offset = texture_offset
-#	Sprite.visible = true
+	CellLibrary.set_sprite_to_tile(Sprite, cell_id, autotile_coords)
 	Sprite.position = from_position
 	Tween.interpolate_property(Sprite, "position", from_position, to_position, 0.1, Tween.TRANS_LINEAR)
 	Tween.start()

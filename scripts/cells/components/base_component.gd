@@ -7,19 +7,14 @@ enum ComponentEventDestination {
 	GLOBAL_EVENT_HANDLER = 2,
 }
 
-#signal component_event_fired(name, args)
 var fire_component_event: FuncRef
 var parent_cell: BaseCell
-
-
-#func _init(_fire_component_event) -> void:
-#	fire_component_event = _fire_component_event
 
 
 func on_tick():
 	pass
 
-
+# warning-ignore:unused_argument
 func on_moved(new_position):
 	pass
 

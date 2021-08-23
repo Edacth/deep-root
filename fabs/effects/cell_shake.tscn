@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/tilesets/foreground.png" type="Texture" id=1]
 [ext_resource path="res://assets/animations/cell_shake.tres" type="Animation" id=2]
+[ext_resource path="res://fabs/effects/cell_shake.gd" type="Script" id=3]
+[ext_resource path="res://assets/highlighter/highlight.png" type="Texture" id=4]
 
 [node name="CellShake" type="Node2D"]
 position = Vector2( 80, 104 )
+script = ExtResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/cell_shake = ExtResource( 2 )
@@ -14,3 +17,7 @@ texture = ExtResource( 1 )
 centered = false
 region_enabled = true
 region_rect = Rect2( 0, 0, 8, 8 )
+
+[node name="Sprite2" type="Sprite" parent="Sprite"]
+texture = ExtResource( 4 )
+centered = false

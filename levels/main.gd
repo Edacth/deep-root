@@ -7,6 +7,7 @@ onready var FireEffectManager := $FireEffectManager
 onready var GUI = $CanvasLayer/GUI
 onready var CellMovementLerper = $CellMovementLerper
 onready var ComponentEventHandler = $ComponentEventHandler
+onready var CellShakeEffectManager = $CellShakeEffectManager
 
 
 func _ready() -> void:
@@ -14,7 +15,7 @@ func _ready() -> void:
 	BlockHighlightManager.setup(Foreground)
 	
 	# Foreground setup
-	Foreground.setup(CellMovementLerper, FireEffectManager)
+	Foreground.setup(CellMovementLerper, FireEffectManager, CellShakeEffectManager)
 	Foreground.elevate_component_event = funcref(ComponentEventHandler, "process_component_event")
 	CellMovementLerper.connect("lerp_effect_finished", Foreground, "update_cell_visually")
 	
