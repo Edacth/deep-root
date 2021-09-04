@@ -9,6 +9,7 @@ enum ForegroundCells {
 	SMALL_TAPROOT = 23,
 	COOKED_SMALL_TAPROOT = 25,
 	REED_BULB = 20,
+	REED_STEM = 21,
 	TAPROOT_SHELL = 26,
 	TAPROOT_STEM = 27,
 }
@@ -24,7 +25,8 @@ func _ready() -> void:
 	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": [ {"move_resistance":[false]} ]}
 	foreground_dict[ForegroundCells.SMALL_TAPROOT] = {"name": "Small Taproot", "tags": [], "components": ["cookable"]}
 	foreground_dict[ForegroundCells.COOKED_SMALL_TAPROOT] = {"name": "Cooked Small Taproot", "tags": [], "components": []}
-	foreground_dict[ForegroundCells.REED_BULB] = {"name": "Reed Bulb", "tags": ["flammable"], "components": ["flammable"]}
+	foreground_dict[ForegroundCells.REED_BULB] = {"name": "Reed Bulb", "tags": [], "components": ["reed_growth"]}
+	foreground_dict[ForegroundCells.REED_STEM] = {"name": "Reed Stem", "tags": [], "components": ["flammable"]}
 	foreground_dict[ForegroundCells.TAPROOT_SHELL] = {"name": "Taproot Shell", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
 	foreground_dict[ForegroundCells.TAPROOT_STEM] = {"name": "Taproot Stem", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
 

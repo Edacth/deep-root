@@ -10,8 +10,12 @@ Envionmental tools
 Environment
     Chance for dirt to fall
     Smaller plants
-    Plant growth
+    Reed growth
     Darkness
+    Adjacent block movement event
+    x Random tick
+    Optimize random ticks
+    Finish reed growth component
 Design
     How do you loosen blocks?
     What is the progression path?

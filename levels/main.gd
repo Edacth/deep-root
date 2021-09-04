@@ -11,6 +11,7 @@ onready var CellShakeEffectManager = $CellShakeEffectManager
 
 
 func _ready() -> void:
+	randomize()
 	# Block Highlight Manager setup
 	BlockHighlightManager.setup(Foreground)
 	

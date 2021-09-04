@@ -63,6 +63,11 @@ func on_tick():
 		components[key].on_tick()
 
 
+func on_random_tick():
+	for key in components:
+		components[key].on_random_tick()
+
+
 func on_moved(new_position: Vector2):
 	for key in components:
 		components[key].on_moved(new_position)

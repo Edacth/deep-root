@@ -14,8 +14,17 @@ var parent_cell: BaseCell
 func on_tick():
 	pass
 
+
+func on_random_tick():
+	pass
+
+
 # warning-ignore:unused_argument
 func on_moved(new_position):
+	pass
+
+
+func on_adjacent_moved():
 	pass
 
 

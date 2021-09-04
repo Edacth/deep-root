@@ -168,6 +168,12 @@ func size() -> int:
 	return len(data) * len(data[0])
 
 
+func vector_size() -> Vector2:
+	if len(data) <= 0:
+		return Vector2.ZERO
+	return Vector2(len(data), len(data[0]))
+
+
 func resize(p_height: int, p_width: int):
 	data.resize(p_height)
 	for i in range(len(data)):
