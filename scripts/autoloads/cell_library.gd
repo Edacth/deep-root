@@ -52,7 +52,6 @@ func get_foreground_tileset():
 
 
 func set_sprite_to_tile(sprite, cell_id, autotile_coords):
-	var foreground_tileset : TileSet = CellLibrary.get_foreground_tileset()
 	var tile_mode = foreground_tileset.tile_get_tile_mode(cell_id)
 	sprite.texture = foreground_tileset.tile_get_texture(cell_id)
 	if tile_mode == TileSet.SINGLE_TILE:

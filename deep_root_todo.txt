@@ -14,8 +14,8 @@ Environment
     Darkness
     Adjacent block movement event
     x Random tick
-    Optimize random ticks
-    Finish reed growth component
+    x Optimize random ticks
+    x Finish reed growth component
 Design
     How do you loosen blocks?
     What is the progression path?

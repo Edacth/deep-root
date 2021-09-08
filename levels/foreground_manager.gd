@@ -4,6 +4,8 @@ class_name ForegroundManager
 var elevate_component_event: FuncRef
 
 var cells: Array2D
+var chunk_size := 8
+var map_size_in_chunks
 var CellMovementLerper: CellMovementLerper
 var FireEffectManager: FireEffectManager
 var CellShakeEffectManager: CellShakeEffectManager
@@ -40,6 +42,11 @@ func read_tilemap_state():
 		var autotile_coords = ForeTilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)
 		var new_cell = create_cellv(ForeTilemap.get_cellv(cell_pos), cell_pos, autotile_coords)
 		cells.set_cellv(cell_pos, new_cell)
+	
+	var foreground_size = cells.vector_size()
+	map_size_in_chunks = Vector2.ZERO
+	map_size_in_chunks.x = ceil(foreground_size.x / 8)
+	map_size_in_chunks.y = ceil(foreground_size.y / 8)
 
 
 func get_cellv(position: Vector2) -> BaseCell:
@@ -132,7 +139,7 @@ func process_component_event(destination, name, args):
 
 func choose_random_tick_locations(number_of_ticks, corner1, corner2):
 	var locations = []
-	for i in range(number_of_ticks):
+	for _i in range(number_of_ticks):
 		var location = Vector2(
 			(randi() % int(corner2.x+1))+int(corner1.x),
 			(randi() % int(corner2.y+1))+int(corner1.y)
@@ -142,6 +149,7 @@ func choose_random_tick_locations(number_of_ticks, corner1, corner2):
 
 
 func _physics_process(_delta: float) -> void:
+	# Map Ticks
 	if OS.get_ticks_msec() - timestamp_of_most_recent_tick >= 100:
 		timestamp_of_most_recent_tick = OS.get_ticks_msec()
 		var rows = cells.get_rows()
@@ -149,18 +157,13 @@ func _physics_process(_delta: float) -> void:
 			for j in range(rows[i].size()):
 				rows[i][j].on_tick()
 		
-		var foreground_size = cells.vector_size()
-		var chunk_count = Vector2.ZERO
-		chunk_count.x = ceil(foreground_size.x / 8)
-		chunk_count.y = ceil(foreground_size.y / 8)
-		
-		for i in range(chunk_count.x):
-			for j in range(chunk_count.y):
+		# Random Ticks
+		for i in range(map_size_in_chunks.x):
+			for j in range(map_size_in_chunks.y):
 				var corner1 = Vector2(i * 8, j * 8)
 				var corner2 = Vector2(((i+1) * 8)-1, ((j+1) * 8)-1)
 				var random_tick_locations = choose_random_tick_locations(1, corner1, corner2)
 				for location in random_tick_locations:	
-#					FireEffectManager.create_fire_effect(location)
 					if cells.has_cellv(location):
 						cells.data[location.x][location.y].on_random_tick()
 	
