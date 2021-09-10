@@ -38,6 +38,15 @@ func get_name() -> String:
 	return CellLibrary.get_cell_data(id)["name"]
 
 
+func get_autotile() -> Vector2:
+	return autotile
+	
+
+func set_autotile(_autotile: Vector2):
+	autotile = _autotile
+	ForegroundManager.update_cell_visually(position)
+
+
 func get_tags_of_components():
 	var tags = []
 	for key in components:
@@ -72,6 +81,11 @@ func on_moved(new_position: Vector2):
 	for key in components:
 		components[key].on_moved(new_position)
 	position = new_position
+
+
+func on_liquid_drip_contact(liquid_type):
+	for key in components:
+		components[key].on_liquid_drip_contact(liquid_type)
 
 
 func get_component(component_name: String):

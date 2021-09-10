@@ -5,10 +5,6 @@ var fires = []
 onready var FireEffect = preload("res://fabs/effects/fire.tscn")
 
 
-func _ready() -> void:
-	pass
-
-
 func create_fire_effect(position: Vector2):
 	var new_fire = FireEffect.instance()
 	new_fire.position = Utilities.grid_pos_to_global_pos(position)

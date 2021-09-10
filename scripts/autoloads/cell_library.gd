@@ -12,23 +12,28 @@ enum ForegroundCells {
 	REED_STEM = 21,
 	TAPROOT_SHELL = 26,
 	TAPROOT_STEM = 27,
+	BUCKET = 28,
+	LOOSE_STONE = 29,
 }
 
 var foreground_dict: Dictionary
 var foreground_tileset = load("res://assets/tilesets/foreground.tres")
+var LiquidType = load("res://scripts/liquid.gd").LiquidType
 
 
 func _ready() -> void:
 	foreground_dict[ForegroundCells.EMPTY] = {"name": "Empty", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.GRASS] = {"name": "Grass", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.DIRT] = {"name": "Dirt", "tags": [], "components": []}
-	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": [ {"move_resistance":[false]} ]}
+	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": [ {"move_resistance":[false]}, "drip_weakenable"]}
 	foreground_dict[ForegroundCells.SMALL_TAPROOT] = {"name": "Small Taproot", "tags": [], "components": ["cookable"]}
-	foreground_dict[ForegroundCells.COOKED_SMALL_TAPROOT] = {"name": "Cooked Small Taproot", "tags": [], "components": []}
+	foreground_dict[ForegroundCells.COOKED_SMALL_TAPROOT] = {"name": "Cooked Small Taproot", "tags": [], "components": [{"liquid_dripper": [LiquidType.SAP]}]}
 	foreground_dict[ForegroundCells.REED_BULB] = {"name": "Reed Bulb", "tags": [], "components": ["reed_growth"]}
 	foreground_dict[ForegroundCells.REED_STEM] = {"name": "Reed Stem", "tags": [], "components": ["flammable"]}
 	foreground_dict[ForegroundCells.TAPROOT_SHELL] = {"name": "Taproot Shell", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
 	foreground_dict[ForegroundCells.TAPROOT_STEM] = {"name": "Taproot Stem", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
+	foreground_dict[ForegroundCells.BUCKET] = {"name": "Bucket", "tags": [], "components": [{"liquid_container": [3]}]}
+	foreground_dict[ForegroundCells.LOOSE_STONE] = {"name": "Loose Stone", "tags": [], "components": []}
 
 
 func get_cell_data(cell_enum: int) -> Dictionary:

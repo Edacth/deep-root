@@ -24,6 +24,10 @@ func on_moved(new_position):
 	pass
 
 
+func on_liquid_drip_contact(liquid_type):
+	pass
+
+
 func on_adjacent_moved():
 	pass
 

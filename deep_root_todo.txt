@@ -5,12 +5,14 @@ Move tool
     x Finish implementing the move resistance component and how the foreground manager handles it.
     Finish implementing the cell shake effect manager
     Prevent dragging cells through yourself
+    Block crafting system
 Envionmental tools
     Campfire
 Environment
     Chance for dirt to fall
     Smaller plants
-    Reed growth
+    Figure out how to properly expose autotile coords to cell components
+    x Reed growth
     Darkness
     Adjacent block movement event
     x Random tick

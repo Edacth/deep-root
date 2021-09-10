@@ -8,6 +8,7 @@ onready var GUI = $CanvasLayer/GUI
 onready var CellMovementLerper = $CellMovementLerper
 onready var ComponentEventHandler = $ComponentEventHandler
 onready var CellShakeEffectManager = $CellShakeEffectManager
+onready var DripEffectManager = $DripEffectManager
 
 
 func _ready() -> void:
@@ -30,5 +31,8 @@ func _ready() -> void:
 	CellMovementLerper.setup()
 	
 	# ComponentEventHandler setup
-	ComponentEventHandler.setup(FireEffectManager)
+	ComponentEventHandler.setup(FireEffectManager, DripEffectManager)
 #	Foreground.connect("component_event_fired", ComponentEventHandler, "handle_event")
+
+	# DripEffectManager setup
+	DripEffectManager.setup(funcref(Foreground, "trigger_drip_contact_on_cell"))

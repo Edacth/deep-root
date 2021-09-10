@@ -120,6 +120,11 @@ func ignite_cell(position: Vector2) -> bool:
 	return false
 
 
+func trigger_drip_contact_on_cell(position: Vector2, liquid_type: int):
+	var chosen_cell = get_cellv(position)
+	chosen_cell.on_liquid_drip_contact(liquid_type)
+
+
 func update_cell_visually(position: Vector2):
 	var data := get_cellv(position)
 	ForeTilemap.set_cell(position.x, position.y, data.id, false, false, false, data.autotile)

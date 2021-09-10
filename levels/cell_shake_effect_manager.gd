@@ -22,8 +22,3 @@ func on_effect_finish(animation_name, finished_effect: Node2D):
 	finished_effect.queue_free()
 	remove_child(finished_effect)
 	effects.erase(finished_effect)
-
-
-#func _input(event: InputEvent) -> void:
-#	if event.is_action_pressed("test_input"):
-#		create_new_effect(Vector2(12, 12))
