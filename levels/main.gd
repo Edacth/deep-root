@@ -9,6 +9,7 @@ onready var CellMovementLerper = $CellMovementLerper
 onready var ComponentEventHandler = $ComponentEventHandler
 onready var CellShakeEffectManager = $CellShakeEffectManager
 onready var DripEffectManager = $DripEffectManager
+onready var CraftingMenuManager = $CraftingMenuManager
 
 
 func _ready() -> void:
@@ -25,7 +26,7 @@ func _ready() -> void:
 	Player.get_node("BlockSelector").connect("mouse_tile_position_updated", GUI, "set_label0_text")
 	
 	# Player setup
-	Player.get_node("BlockSelector").setup(BlockHighlightManager, Foreground)
+	Player.get_node("BlockSelector").setup(BlockHighlightManager, Foreground, CraftingMenuManager)
 	
 	# CellMovementLerper setup
 	CellMovementLerper.setup()
@@ -36,3 +37,7 @@ func _ready() -> void:
 
 	# DripEffectManager setup
 	DripEffectManager.setup(funcref(Foreground, "trigger_drip_contact_on_cell"))
+
+	# CraftingMenuManger setup
+	CraftingMenuManager.setup(Foreground)
+	

@@ -29,7 +29,7 @@ func _ready() -> void:
 	foreground_dict[ForegroundCells.SMALL_TAPROOT] = {"name": "Small Taproot", "tags": [], "components": ["cookable"]}
 	foreground_dict[ForegroundCells.COOKED_SMALL_TAPROOT] = {"name": "Cooked Small Taproot", "tags": [], "components": [{"liquid_dripper": [LiquidType.SAP]}]}
 	foreground_dict[ForegroundCells.REED_BULB] = {"name": "Reed Bulb", "tags": [], "components": ["reed_growth"]}
-	foreground_dict[ForegroundCells.REED_STEM] = {"name": "Reed Stem", "tags": [], "components": ["flammable"]}
+	foreground_dict[ForegroundCells.REED_STEM] = {"name": "Reed Stem", "tags": [], "components": ["flammable"], "can_be_crafted_into":[{"type": ForegroundCells.BUCKET, "autotile": {"x": 0, "y": 3}}]}
 	foreground_dict[ForegroundCells.TAPROOT_SHELL] = {"name": "Taproot Shell", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
 	foreground_dict[ForegroundCells.TAPROOT_STEM] = {"name": "Taproot Stem", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
 	foreground_dict[ForegroundCells.BUCKET] = {"name": "Bucket", "tags": [], "components": [{"liquid_container": [3]}]}

@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/crafting_menu/hammer.png" type="Texture" id=1]
+[ext_resource path="res://assets/crafting_menu/background.png" type="Texture" id=2]
+[ext_resource path="res://fabs/crafting_menu/crafting_menu.gd" type="Script" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StreamTexture" id=4]
+load_path = "res://.import/foreground.png-ab07684728b1d0fd7f27da6da75bc4f5.stex"
+
+[node name="CraftingMenu" type="Node2D"]
+z_index = 1
+script = ExtResource( 4 )
+
+[node name="MainContainer" type="PanelContainer" parent="."]
+margin_right = 20.0
+margin_bottom = 10.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Shrinker" type="PanelContainer" parent="MainContainer"]
+margin_right = 17.0
+margin_bottom = 10.0
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 2 )
+
+[node name="Background" type="NinePatchRect" parent="MainContainer/Shrinker"]
+margin_right = 17.0
+margin_bottom = 10.0
+texture = ExtResource( 2 )
+patch_margin_left = 1
+patch_margin_top = 1
+patch_margin_right = 1
+patch_margin_bottom = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SectionContainer" type="HBoxContainer" parent="MainContainer/Shrinker"]
+margin_right = 17.0
+margin_bottom = 10.0
+mouse_filter = 2
+size_flags_vertical = 0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainSection" type="PanelContainer" parent="MainContainer/Shrinker/SectionContainer"]
+margin_right = 17.0
+margin_bottom = 10.0
+rect_min_size = Vector2( 17, 10 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 3 )
+
+[node name="SourceCellSprite" type="Sprite" parent="MainContainer/Shrinker/SectionContainer/MainSection"]
+position = Vector2( 5, 5 )
+texture = SubResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 8, 8 )
+
+[node name="Hammer" type="Sprite" parent="MainContainer/Shrinker/SectionContainer/MainSection"]
+position = Vector2( 12, 5 )
+texture = ExtResource( 1 )

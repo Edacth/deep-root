@@ -1,16 +1,21 @@
 Character controller
     Jumping
     Overall improvements
-Move tool
+Player toolbox
+    (A) Block crafting system
+        Menu should close when the cursor leaves the ui
+        Cell moving should be disabled while the crafting ui is open
+        The crafting system should ensure the cell is the same as when the ui was opened
+    Implement a hotbar/way to display what tools the player has
     x Finish implementing the move resistance component and how the foreground manager handles it.
     Finish implementing the cell shake effect manager
     Prevent dragging cells through yourself
-    Block crafting system
+    Info Journal
 Envionmental tools
-    Campfire
+    x Campfire
 Environment
     Chance for dirt to fall
-    Smaller plants
+    Plant growth
     Figure out how to properly expose autotile coords to cell components
     x Reed growth
     Darkness
@@ -19,9 +24,8 @@ Environment
     x Optimize random ticks
     x Finish reed growth component
 Design
-    How do you loosen blocks?
+    x How do you loosen blocks?
+    How can stone be loosened from the side?
     What is the progression path?
 
 ===
-Using beet juice to soften stone so you can move it
-Stone doesn't fall

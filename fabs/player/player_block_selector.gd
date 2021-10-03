@@ -1,5 +1,6 @@
 extends Node2D
 
+signal mouse_tile_position_updated(old_position, new_position)
 var selected_position := Vector2(0, 0)
 var cell_move_input_pressed := false
 var moving_cell := false
@@ -7,13 +8,13 @@ var position_that_cell_move_was_pressed: Vector2
 var timestamp_of_most_recent_move_start
 var BlockHighlightManager: BlockHighlightManager
 var Foreground: ForegroundManager
+var CraftingMenuManager: CraftingMenuManager
 
-signal mouse_tile_position_updated(old_position, new_position)
 
-
-func setup(_BlockHighlightManager: BlockHighlightManager, _Foreground: ForegroundManager) -> void:
+func setup(_BlockHighlightManager, _Foreground, _CraftingMenuManager) -> void:
 	BlockHighlightManager = _BlockHighlightManager
 	Foreground = _Foreground
+	CraftingMenuManager = _CraftingMenuManager
 	timestamp_of_most_recent_move_start = OS.get_ticks_msec()
 
 
@@ -57,3 +58,5 @@ func _input(event: InputEvent) -> void:
 		cell_move_input_pressed = false
 		moving_cell = false
 		BlockHighlightManager.set_move_origin_highlight_visibility(false)
+	elif event.is_action_pressed("open_crafting_menu"):
+		CraftingMenuManager.show_crafting_menu(selected_position)

@@ -24,9 +24,3 @@ func on_drip_collide(collided_drip: Node2D, collision_position):
 	drips.erase(collided_drip)
 	var grid_pos = Utilities.global_pos_to_grid_pos(collision_position)
 	trigger_drip_contact_on_cell.call_func(grid_pos, Liquid.LiquidType.SAP)
-	
-
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("test_input"):
-		create_drip_effect(Vector2(12, 9))

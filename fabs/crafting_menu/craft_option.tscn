@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://fabs/crafting_menu/craft_option.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StreamTexture" id=2]
+load_path = "res://.import/foreground.png-ab07684728b1d0fd7f27da6da75bc4f5.stex"
+
+[node name="CraftOption" type="PanelContainer"]
+margin_left = 16.0
+margin_right = 26.0
+margin_bottom = 10.0
+rect_min_size = Vector2( 9, 10 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 5, 5 )
+texture = SubResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 8, 8 )
