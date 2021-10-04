@@ -13,7 +13,7 @@ func set_fire(_on_fire):
 	fire_component_event.call_func(ComponentEventDestination.GLOBAL_EVENT_HANDLER, "ignite_fire", [self, parent_cell.position])
 
 # warning-ignore:unused_argument
-func on_moved(new_position):
+func on_move(new_position):
 	if on_fire:
 		on_fire = false
 		fire_component_event.call_func(ComponentEventDestination.GLOBAL_EVENT_HANDLER, "extinguish_fire", [self, parent_cell.position])

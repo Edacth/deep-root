@@ -14,6 +14,10 @@ enum ForegroundCells {
 	TAPROOT_STEM = 27,
 	BUCKET = 28,
 	LOOSE_STONE = 29,
+	NAIL = 30,
+	ORE = 31,
+	LOOSE_ORE = 32,
+	LOOSE_TAPROOT_SHELL = 33
 }
 
 var foreground_dict: Dictionary
@@ -25,15 +29,19 @@ func _ready() -> void:
 	foreground_dict[ForegroundCells.EMPTY] = {"name": "Empty", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.GRASS] = {"name": "Grass", "tags": [], "components": []}
 	foreground_dict[ForegroundCells.DIRT] = {"name": "Dirt", "tags": [], "components": []}
-	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": [ {"move_resistance":[false]}, "drip_weakenable"]}
+	foreground_dict[ForegroundCells.STONE] = {"name": "Stone", "tags": [], "components": [ {"move_resistance":[false]}, {"drip_weakenable":[CellLibrary.ForegroundCells.LOOSE_STONE]}]}
 	foreground_dict[ForegroundCells.SMALL_TAPROOT] = {"name": "Small Taproot", "tags": [], "components": ["cookable"]}
 	foreground_dict[ForegroundCells.COOKED_SMALL_TAPROOT] = {"name": "Cooked Small Taproot", "tags": [], "components": [{"liquid_dripper": [LiquidType.SAP]}]}
 	foreground_dict[ForegroundCells.REED_BULB] = {"name": "Reed Bulb", "tags": [], "components": ["reed_growth"]}
 	foreground_dict[ForegroundCells.REED_STEM] = {"name": "Reed Stem", "tags": [], "components": ["flammable"], "can_be_crafted_into":[{"type": ForegroundCells.BUCKET, "autotile": {"x": 0, "y": 3}}]}
-	foreground_dict[ForegroundCells.TAPROOT_SHELL] = {"name": "Taproot Shell", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
+	foreground_dict[ForegroundCells.TAPROOT_SHELL] = {"name": "Taproot Shell", "tags": [], "components": ["cookable", {"move_resistance":[false]}, {"nailable": [CellLibrary.ForegroundCells.LOOSE_TAPROOT_SHELL]}]}
 	foreground_dict[ForegroundCells.TAPROOT_STEM] = {"name": "Taproot Stem", "tags": [], "components": ["cookable", {"move_resistance":[false]}]}
 	foreground_dict[ForegroundCells.BUCKET] = {"name": "Bucket", "tags": [], "components": [{"liquid_container": [3]}]}
 	foreground_dict[ForegroundCells.LOOSE_STONE] = {"name": "Loose Stone", "tags": [], "components": []}
+	foreground_dict[ForegroundCells.NAIL] = {"name": "Nail", "tags": [], "components": ["hammerable"]}
+	foreground_dict[ForegroundCells.ORE] = {"name": "Ore", "tags": [], "components": [ {"move_resistance":[false]}, {"drip_weakenable":[CellLibrary.ForegroundCells.LOOSE_ORE]}]}
+	foreground_dict[ForegroundCells.LOOSE_ORE] = {"name": "Loose Ore", "tags": [], "components": [], "can_be_crafted_into":[{"type": ForegroundCells.NAIL, "autotile": {"x": 0, "y": 0}}]}
+	foreground_dict[ForegroundCells.LOOSE_TAPROOT_SHELL] = {"name": "Loose Tapproot Shell", "tags": [], "components": []}
 
 
 func get_cell_data(cell_enum: int) -> Dictionary:

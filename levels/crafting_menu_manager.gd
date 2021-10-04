@@ -4,6 +4,7 @@ class_name CraftingMenuManager
 const CraftingMenuScene = preload("res://fabs/crafting_menu/crafting_menu.tscn")
 var CraftingMenu: Node
 var ForegroundManager: ForegroundManager
+var is_menu_active: bool setget ,get_is_menu_active
 
 
 func setup(_ForegroundManager) -> void:
@@ -11,6 +12,11 @@ func setup(_ForegroundManager) -> void:
 	CraftingMenu = CraftingMenuScene.instance()
 	CraftingMenu.setup()
 	CraftingMenu.connect("option_selected", self, "on_option_selected")
+	CraftingMenu.connect("mouse_exited", self, "hide_crafting_menu")
+
+
+func get_is_menu_active():
+	return is_menu_active
 
 
 func show_crafting_menu(grid_position):
@@ -22,10 +28,12 @@ func show_crafting_menu(grid_position):
 	CraftingMenu.set_data(cell, grid_position)
 	if !is_instance_valid(CraftingMenu.get_parent()):
 		add_child(CraftingMenu)
+	is_menu_active = true
 
 
 func hide_crafting_menu():
 	remove_child(CraftingMenu)
+	is_menu_active = false
 
 
 func on_option_selected(cell_id, autotile, grid_position):

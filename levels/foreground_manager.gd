@@ -57,12 +57,20 @@ func get_cellv(position: Vector2) -> BaseCell:
 	return cell
 
 
-func are_tiles_adjacent(position1: Vector2, position2: Vector2) -> bool:
+func are_cells_adjacent(position1: Vector2, position2: Vector2) -> bool:
 	var distance = sqrt(pow(position2.x - position1.x, 2) + pow(position2.y - position1.y, 2))
 	if distance <= 1:
 		return true
 	return false
-
+	
+	
+func get_adjacent_cell_positions(cell_position):
+	return [Vector2(cell_position.x+1, cell_position.y),
+			Vector2(cell_position.x-1, cell_position.y),
+			Vector2(cell_position.x, cell_position.y+1),
+			Vector2(cell_position.x, cell_position.y-1)
+	]
+	
 
 func create_cellv(cell_type, cell_position = Vector2(0, 0), autotile = Vector2(0, 0)) -> BaseCell:
 	var new_cell = BaseCell.new(cell_type, cell_position, self, funcref(self, "process_component_event"), autotile)
@@ -87,7 +95,7 @@ func destroy_cell(destroy_position: Vector2):
 	
 
 func move_cell_with_player_validation(from_position: Vector2, to_position: Vector2) -> bool:
-	if are_tiles_adjacent(from_position, to_position) == false:
+	if are_cells_adjacent(from_position, to_position) == false:
 		return false
 	if get_cellv(to_position).id != CellLibrary.ForegroundCells.EMPTY:
 		return false
@@ -105,7 +113,13 @@ func move_cell(from_position: Vector2, to_position: Vector2, play_lerp: bool = f
 		if move_resistance_component.is_moveable() == false:
 			CellShakeEffectManager.create_new_effect(from_position, from_value.id, from_value.autotile)
 			return false
-	from_value.on_moved(to_position)
+	from_value.on_move(to_position)
+	for position in get_adjacent_cell_positions(from_position):
+		if position != to_position:
+			get_cellv(position).on_adjacent_cell_move(from_position, to_position)
+	for position in get_adjacent_cell_positions(to_position):
+		if position != from_position:
+			get_cellv(position).on_adjacent_cell_move(from_position, to_position)
 	set_cellv(to_position, from_value, !play_lerp)
 	set_cellv(from_position, create_cellv(CellLibrary.ForegroundCells.EMPTY, from_position))
 	return true

@@ -2,15 +2,17 @@ Character controller
     Jumping
     Overall improvements
 Player toolbox
-    (A) Block crafting system
-        Menu should close when the cursor leaves the ui
-        Cell moving should be disabled while the crafting ui is open
+    Block crafting system
+        x Menu should close when the cursor leaves the ui
+        x Cell moving should be disabled while the crafting ui is open
         The crafting system should ensure the cell is the same as when the ui was opened
     Implement a hotbar/way to display what tools the player has
     x Finish implementing the move resistance component and how the foreground manager handles it.
     Finish implementing the cell shake effect manager
     Prevent dragging cells through yourself
     Info Journal
+    Root Taps that siphon the juice of a root if it is being cooked
+    Nails 
 Envionmental tools
     x Campfire
 Environment

@@ -27,7 +27,8 @@ func _init(_id, _position, _ForegroundManager, _elevate_component_event, _autoti
 			component_name = component
 #		var hmm = ProjectSettings.get_setting("_global_script_classes")
 		var new_component = load("res://scripts/cells/components/" + component_name + ".gd").new()
-		if component_params.size() > 0:
+#		if component_params.size() > 0:
+		if new_component.has_method("setup"):
 			new_component.callv("setup", component_params)
 		new_component.fire_component_event = funcref(self, "process_component_signal")
 		new_component.parent_cell = self
@@ -77,10 +78,15 @@ func on_random_tick():
 		components[key].on_random_tick()
 
 
-func on_moved(new_position: Vector2):
+func on_move(new_position: Vector2):
 	for key in components:
-		components[key].on_moved(new_position)
+		components[key].on_move(new_position)
 	position = new_position
+
+
+func on_adjacent_cell_move(old_adjacent_cell_position, new_adjacent_cell_position):
+	for key in components:
+		components[key].on_adjacent_cell_move(old_adjacent_cell_position, new_adjacent_cell_position)
 
 
 func on_liquid_drip_contact(liquid_type):

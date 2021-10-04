@@ -2,6 +2,7 @@ extends Node2D
 class_name crafting_menu
 
 signal option_selected
+signal mouse_exited
 var source_cell : BaseCell
 var grid_position: Vector2
 var SectionContainer: HBoxContainer
@@ -13,15 +14,13 @@ var CraftOptionFab = preload("res://fabs/crafting_menu/craft_option.tscn")
 func setup() -> void:
 	SectionContainer = $MainContainer/Shrinker/SectionContainer
 	SourceCellSprite = $MainContainer/Shrinker/SectionContainer/MainSection/SourceCellSprite
+	$MainContainer.connect("mouse_exited", self, "on_mouse_exited")
 
 
 func set_data(_source_cell, _grid_position):
 	source_cell = _source_cell
 	grid_position = _grid_position
 	CellLibrary.set_sprite_to_tile(SourceCellSprite, source_cell.id, source_cell.get_autotile())
-#	for option in craft_option_nodes:
-#		if !is_instance_valid(option.get_parent()):
-#			remove_child(option)
 	var craft_options = []
 	if CellLibrary.foreground_dict[source_cell.id].has("can_be_crafted_into"):
 		craft_options = CellLibrary.foreground_dict[source_cell.id]["can_be_crafted_into"]
@@ -38,12 +37,21 @@ func set_data(_source_cell, _grid_position):
 		else:
 			if is_instance_valid(craft_option_nodes[i].get_parent()):
 				SectionContainer.remove_child(craft_option_nodes[i])
-	
-	
+
+
 func on_option_selected(cell_id, autotile):
 	emit_signal("option_selected", cell_id, autotile, grid_position)
 
-	
-	# Set source cell sprite
-	# Get craftable blocks
-	# Create and set craft options
+
+func _on_MainContainer_mouse_exited() -> void:
+	emit_signal("mouse_exited")
+
+
+func _on_Shrinker_mouse_exited() -> void:
+	emit_signal("mouse_exited")
+
+
+func _on_SectionContainer_mouse_exited() -> void:
+	var mouse_is_inside = SectionContainer.get_global_rect().has_point(SectionContainer.get_global_mouse_position())
+	if !mouse_is_inside:
+		emit_signal("mouse_exited")

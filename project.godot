@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "BaseComponent",
+"class": "AdjacentTest",
+"language": "GDScript",
+"path": "res://scripts/cells/components/adjacent_test.gd"
+}, {
 "base": "Reference",
 "class": "Array2D",
 "language": "GDScript",
@@ -79,6 +84,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://levels/foreground_manager.gd"
 }, {
+"base": "BaseComponent",
+"class": "Hammerable",
+"language": "GDScript",
+"path": "res://scripts/cells/components/hammerable.gd"
+}, {
 "base": "Reference",
 "class": "Liquid",
 "language": "GDScript",
@@ -100,6 +110,11 @@ _global_script_classes=[ {
 "path": "res://scripts/cells/components/move_resistance.gd"
 }, {
 "base": "BaseComponent",
+"class": "Nailable",
+"language": "GDScript",
+"path": "res://scripts/cells/components/nailable.gd"
+}, {
+"base": "BaseComponent",
 "class": "ReedGrowth",
 "language": "GDScript",
 "path": "res://scripts/cells/components/reed_growth.gd"
@@ -110,6 +125,7 @@ _global_script_classes=[ {
 "path": "res://fabs/crafting_menu/crafting_menu.gd"
 } ]
 _global_script_class_icons={
+"AdjacentTest": "",
 "Array2D": "",
 "BaseCell": "",
 "BaseComponent": "",
@@ -124,10 +140,12 @@ _global_script_class_icons={
 "FireEffectManager": "",
 "Flammable": "",
 "ForegroundManager": "",
+"Hammerable": "",
 "Liquid": "",
 "LiquidContainer": "",
 "LiquidDripper": "",
 "MoveResistance": "",
+"Nailable": "",
 "ReedGrowth": "",
 "crafting_menu": ""
 }

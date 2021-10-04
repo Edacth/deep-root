@@ -11,7 +11,7 @@ func on_random_tick():
 		var cell_in_place_position = fire_component_event.call_func(ComponentEventDestination.FOREGROUND_MANAGER, "get_cellv", [cell_place_position])
 		if cell_in_place_position.id == CellLibrary.ForegroundCells.EMPTY:
 			# Grow
-			var grown_cell = fire_component_event.call_func(ComponentEventDestination.FOREGROUND_MANAGER, "create_cellv", [growth_cell_type])
+			var grown_cell = fire_component_event.call_func(ComponentEventDestination.FOREGROUND_MANAGER, "create_cellv", [growth_cell_type, cell_place_position])
 			fire_component_event.call_func(ComponentEventDestination.FOREGROUND_MANAGER, "set_cellv", [cell_place_position, grown_cell])
 			return
 		elif cell_in_place_position.id == CellLibrary.ForegroundCells.REED_STEM:

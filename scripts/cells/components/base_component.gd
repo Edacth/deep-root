@@ -20,15 +20,15 @@ func on_random_tick():
 
 
 # warning-ignore:unused_argument
-func on_moved(new_position):
+func on_move(new_position):
+	pass
+
+
+func on_adjacent_cell_move(old_adjacent_cell_position, new_adjacent_cell_position):
 	pass
 
 
 func on_liquid_drip_contact(liquid_type):
-	pass
-
-
-func on_adjacent_moved():
 	pass
 
 
